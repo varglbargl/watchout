@@ -11,7 +11,7 @@ var gameSettings = {
 // }
 
 // draw a gameboard with SVG
-d3.select('body').append('svg').attr({width: gameSettings.width, height: gameSettings.height}).attr('fill', 'blue');
+var board = d3.select('body').append('svg:svg').attr({width: gameSettings.width, height: gameSettings.height, class: "gameBoard"});
 
 var grid = {
   // this code makes a grid on top of our gameBoard.
@@ -19,9 +19,19 @@ var grid = {
   y: d3.scale.linear().domain([0, 100]).range([0, gameSettings.height])
 }
 
+var makeEnemies = function () {
+  return _.range(0, gameSettings.nEnemies).map(function(i) {
+    return {
+      id: i,
+      x: Math.random() * 800,
+      y: Math.random() * 600
+    }
+  })
+};
+
 var enemies = makeEnemies();
 
-d3.selectAll('circle').data(enemies).enter().append('circle').attr('cx', function(i){ return i.x; }).attr('cy', function(i){ return i.y; }).attr('id', function(i){ return i.id; });
+board.selectAll('circle').data(enemies).enter().append('circle').attr('cx', function(i){ return i.x; }).attr('cy', function(i){ return i.y; }).attr('id', function(i){ return i.id; }).attr('r', 10).attr('fill', 'blue' );
 
 // var Player = function(){
 
@@ -30,16 +40,6 @@ d3.selectAll('circle').data(enemies).enter().append('circle').attr('cx', functio
 // Player.prototype.path = "m161,112l-38,58l13.5,21l49.5,0l12,-25l-37,-54z"
 
 // Player.prototype.fill="blue"
-
-var makeEnemies = function () {
-  return _.range(0, gameSettings.nEnemies).map(function(i) {
-    return {
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100
-    }
-  })
-};
 
 // var render = function(enemyData){
 //   var enemies = d3.selectAll('circle.enemy').data(enemyData, function(d){ return d.id 
