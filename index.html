@@ -4,31 +4,43 @@
   <link rel="stylesheet" type="text/css" href="styles.css" />
   <script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
   <script src="http://underscorejs.org/underscore.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
   <title>Don't Get Hit!</title>
 </head>
 <body>
   <h1> Don't Get Hit! </h1>
-    <!-- <div class = "gameBoard">
-      <div class = "scoreBoard">
-        <h3> High Score: <span class = "bestScore"></span> </h3>
-        <h3> Current Score: <span class = "activeScore"></span> </h3>
-      </div>
-    </div> -->
-    <script>
-    var gameSettings = {
-      height: 600,
-      width: 800,
-      nEnemies: 45,
-      padding: 20
-    }
+  
+  <div class = "scoreBoard">
+    <h3> High Score: <span class = "bestScore"></span> </h3>
+    <h3> Current Score: <span class = "activeScore"></span> </h3>
+  </div>
 
-var score = {
+  <script>
+  var gameSettings = {
+    height: 600,
+    width: 800,
+    nEnemies: 45,
+    padding: 20
+  }
+
+  var score = {
    currentScore: 0,
    bestScore: 0
  };
 
+ setInterval(function(){
+  score.currentScore++;
+  d3.select('.activeScore').text(score.currentScore);
+  if(score.currentScore > score.bestScore){
+    score.bestScore = score.currentScore;
+    d3.select('.bestScore').text(score.bestScore);
+  }
+}, 100);
+
 // draw a gameboard with SVG
 var board = d3.select('body').append('svg').attr({width: gameSettings.width, height: gameSettings.height, class: "gameBoard"});
+
+
 
 var grid = {
   // this code makes a grid on top of our gameBoard.
@@ -79,10 +91,11 @@ function collide(enemies) {
   enemies.each(function(){
       //debugger;
 
-    if(Math.abs(d3.select(this).attr("cx") - d3.select('.player').attr("cx")) < 20 && Math.abs(d3.select(this).attr("cy") - d3.select('.player').attr("cy")) < 20){
-      console.log('collision detected');
-    }
-  });
+      if(Math.abs(d3.select(this).attr("cx") - d3.select('.player').attr("cx")) < 20 && Math.abs(d3.select(this).attr("cy") - d3.select('.player').attr("cy")) < 20){
+        score.currentScore = 0;
+        d3.select('.activeScore').text(score.currentScore);
+      }
+    });
 }
 
 d3.timer(function(){collide(renderEnemies)});

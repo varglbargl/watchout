@@ -1,6 +1,7 @@
 body {
   width: 100%;
   text-align: center;
+  font-family: 'Roboto Condensed';
 }
 
 .gameBoard {
@@ -8,4 +9,8 @@ body {
   height: 600px;
   background-color: #CCC;
   margin: 0 auto;
+}
+
+h1{
+  font-weight: 700;
 }
